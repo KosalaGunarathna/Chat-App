@@ -1,3 +1,5 @@
+import ui.screens.LoginView;
+
 /**
  * Main entry point for the ChatNest application.
  * This class initializes the application by launching the LoginScreen.
