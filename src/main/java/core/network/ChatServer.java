@@ -14,8 +14,6 @@ public class ChatServer {
             registry.rebind("ChatService", chatNetworkService);
 
             System.out.println("Chat server is running...");
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

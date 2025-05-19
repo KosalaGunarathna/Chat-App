@@ -21,14 +21,13 @@ public class ChatClient {
             chatNetworkService.notifyUserJoined(nickname);
 
             while (true) {
-                System.out.print("Enter message (type 'Bye' to leave): ");
+                System.out.print("Enter message 'Bye' to leave: ");
                 String message = scanner.nextLine();
 
                 if (message.equalsIgnoreCase("Bye")) {
                     chatNetworkService.notifyUserLeft(nickname);
                     break;
                 }
-
                 // Broadcast the message
                 chatNetworkService.broadcastMessage(nickname + ": " + message);
             }

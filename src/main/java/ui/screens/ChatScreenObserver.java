@@ -4,9 +4,6 @@ import core.models.User;
 import core.models.ChatMessage;
 import core.services.ChatObserver;
 
-/**
- * Concrete implementation of ChatObserver for the ChatWindow
- */
 public class ChatScreenObserver implements ChatObserver {
     
     private ChatScreen chatScreen;

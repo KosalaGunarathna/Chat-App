@@ -4,6 +4,7 @@ import core.models.ChatMessage;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import ui.screens.ChatScreen;
 import utils.HibernateUtil;
 
 import java.io.File;
@@ -15,29 +16,17 @@ import java.util.List;
 
 public class ChatServiceManager {
 
-    // Get a chat by ID
-    public ChatMessage getChatById(int chatId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            ChatMessage chatMessage = session.get(ChatMessage.class, chatId);
-            return chatMessage;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     // Start a new chat
     public ChatMessage startChat() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setStartTime(LocalDateTime.now());
             session.save(chatMessage);
-
             transaction.commit();
             System.out.println("Chat started successfully at " + chatMessage.getStartTime());
             return chatMessage;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -72,6 +61,7 @@ public class ChatServiceManager {
     }
 
 
+
     public List<ChatMessage> getAllChats() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<ChatMessage> query = session.createQuery("FROM ChatMessage", ChatMessage.class);
@@ -82,4 +72,16 @@ public class ChatServiceManager {
             return new ArrayList<>();
         }
     }
+
+    // Get a chat by ID
+    public ChatMessage getChatById(int chatId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            ChatMessage chatMessage = session.get(ChatMessage.class, chatId);
+            return chatMessage;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

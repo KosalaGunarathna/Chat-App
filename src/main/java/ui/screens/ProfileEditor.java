@@ -10,9 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-/**
- * Screen for users to update their profile details
- */
+
 public class ProfileEditor extends JFrame {
 
     protected JTextField usernameField;
@@ -41,7 +39,7 @@ public class ProfileEditor extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Create professional-style header
+        // Create header
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(THEME_PRIMARY);
         headerPanel.setLayout(new BorderLayout());
@@ -90,13 +88,13 @@ public class ProfileEditor extends JFrame {
 
         JLabel profilePicLabel = new JLabel("Profile Picture");
         profilePicLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-        profilePicLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        profilePicLabel.setHorizontalAlignment(SwingConstants.LEFT);
         profilePicLabel.setForeground(THEME_TEXT);
 
-        profilePictureLabel = new JLabel(user.getProfilePicture() != null ? new File(user.getProfilePicture()).getName() : "Not selected");
+        profilePictureLabel = new JLabel(); // Start with an empty label
         profilePictureLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        // Display current profile picture if available
+// Display current profile picture if available
         if (user.getProfilePicture() != null && !user.getProfilePicture().isEmpty()) {
             try {
                 ImageIcon icon = new ImageIcon(user.getProfilePicture());
@@ -106,6 +104,8 @@ public class ProfileEditor extends JFrame {
                 profilePictureLabel.setIcon(null);
                 profilePictureLabel.setText("Error loading image");
             }
+        } else {
+            profilePictureLabel.setText("No image"); // Placeholder if no image
         }
 
         uploadPictureButton = new JButton("Change Picture");
@@ -142,78 +142,85 @@ public class ProfileEditor extends JFrame {
         profilePanel.add(userPicLabel);
 
         // Create form panel
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridBagLayout());
+
+        JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(THEME_BACKGROUND);
-        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        formPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.gridwidth = 2;
+        gbc.weightx = 0.2;
 
+// Row 0 - Username
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(usernameLabel, gbc);
 
-        gbc.gridy = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         formPanel.add(usernameField, gbc);
 
-        gbc.gridy = 2;
+// Row 1 - Password
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.weightx = 0.2;
         formPanel.add(passwordLabel, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         formPanel.add(passwordField, gbc);
 
-        gbc.gridy = 4;
+// Row 2 - Nickname
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.weightx = 0.2;
         formPanel.add(nicknameLabel, gbc);
 
-        gbc.gridy = 5;
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         formPanel.add(nicknameField, gbc);
 
-        gbc.gridy = 6;
+// Row 3 - Profile Picture Label
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.weightx = 0.1;
         formPanel.add(profilePicLabel, gbc);
 
-        // Create picture panel
-        JPanel picturePanel = new JPanel();
-        picturePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+// Row 4 - Picture Upload Area
+        JPanel picturePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         picturePanel.setBackground(THEME_BACKGROUND);
         picturePanel.add(profilePictureLabel);
         picturePanel.add(uploadPictureButton);
 
-        gbc.gridy = 7;
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
         formPanel.add(picturePanel, gbc);
 
-        // Beautified button layout
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridBagLayout());
+// Row 5 - Buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         buttonPanel.setBackground(THEME_BACKGROUND);
-        GridBagConstraints btnGbc = new GridBagConstraints();
-        btnGbc.insets = new Insets(20, 10, 10, 10);
 
-        // Set preferred button sizes
-        updateButton.setPreferredSize(new Dimension(120, 40));
-        backButton.setPreferredSize(new Dimension(120, 40));
+        updateButton.setPreferredSize(new Dimension(200, 40));
+        backButton.setPreferredSize(new Dimension(200, 40));
+        buttonPanel.add(updateButton);
+        buttonPanel.add(backButton);
 
-        // Add buttons to the panel
-        btnGbc.gridx = 0;
-        buttonPanel.add(updateButton, btnGbc);
-
-        btnGbc.gridx = 1;
-        buttonPanel.add(backButton, btnGbc);
-
-        gbc.gridy = 8;
+        gbc.gridy = 5;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         formPanel.add(buttonPanel, gbc);
 
-        // Main panel with BorderLayout
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
+// Main Panel
+        JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(THEME_BACKGROUND);
         mainPanel.add(headerPanel, BorderLayout.NORTH);
-        mainPanel.add(profilePanel, BorderLayout.CENTER);
-        mainPanel.add(formPanel, BorderLayout.SOUTH);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        add(mainPanel);
+        setContentPane(mainPanel);
+
+
 
         // Button actions
         UserAccountService userAccountService = new UserAccountService();
@@ -270,7 +277,7 @@ public class ProfileEditor extends JFrame {
 
                 JOptionPane.showMessageDialog(ProfileEditor.this, "Profile updated successfully!");
                 dispose(); // Close profile update screen
-                new ui.screens.ChatScreen(user).setVisible(true); // Return to chat window
+                new ChatScreen(user).setVisible(true); // Return to chat window
             }
         });
 
@@ -278,7 +285,7 @@ public class ProfileEditor extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close profile update screen
-                new ui.screens.ChatScreen(user).setVisible(true); // Return to chat window
+                new ChatScreen(user).setVisible(true); // Return to chat window
             }
         });
     }

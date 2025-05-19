@@ -27,8 +27,6 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-
-
     // Getters and Setters
     public int getId() {
         return id;

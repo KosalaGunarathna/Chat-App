@@ -42,7 +42,6 @@ public class LoginView extends JFrame {
 
     public LoginView() {
         startChatServer();
-
         setTitle("Sign In");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -132,7 +131,7 @@ public class LoginView extends JFrame {
                     passwordField.setText("");
 
                     // All users go to ChatScreen, including admins
-                    new ui.screens.ChatScreen(user).setVisible(true);
+                    new ChatScreen(user).setVisible(true);
                     setVisible(false); // Hide the LoginView window
                 } else {
                     JOptionPane.showMessageDialog(LoginView.this, "Invalid email or password.");

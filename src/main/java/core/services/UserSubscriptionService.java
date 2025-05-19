@@ -101,7 +101,7 @@ public class UserSubscriptionService {
         }
     }
 
-    // Get all subscriptions for a specific user
+    // Get all subscriptions for a  user
     public List<UserSubscription> getSubscriptionsForUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM UserSubscription WHERE user.id = :userId";
@@ -114,7 +114,7 @@ public class UserSubscriptionService {
         }
     }
 
-    // Check if a user is subscribed to a specific chat
+    // Check if a user is subscribed to a  chat
     public boolean isUserSubscribedToChat(User user, ChatMessage chatMessage) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             String hql = "FROM UserSubscription WHERE user.id = :userId AND chatMessage.id = :chatId";

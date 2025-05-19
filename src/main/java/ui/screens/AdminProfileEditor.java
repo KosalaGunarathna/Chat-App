@@ -7,23 +7,17 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Screen for admins to update user profile details
- * This is a specialized version of ProfileUpdateScreen that returns to AdminPanel
- */
+
 public class AdminProfileEditor extends ui.screens.ProfileEditor {
 
     public AdminProfileEditor(User user) {
         super(user);
-
         setTitle("Edit User Profile");
-
         for (ActionListener al : backButton.getActionListeners()) {
             backButton.removeActionListener(al);
         }
 
         backButton.setText("Back");
-
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,7 +41,7 @@ public class AdminProfileEditor extends ui.screens.ProfileEditor {
                 // Validate input
                 if (username.isEmpty() || password.isEmpty() || nickname.isEmpty()) {
                     JOptionPane.showMessageDialog(AdminProfileEditor.this,
-                            "Please fill in all required fields (Username, Password, Nickname).",
+                            "Please fill in all required fields",
                             "Update Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }

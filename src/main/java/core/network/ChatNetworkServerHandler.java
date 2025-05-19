@@ -24,7 +24,7 @@ public class ChatNetworkServerHandler extends UnicastRemoteObject implements Cha
         userCallbacks = new HashMap<>();
         callbackRegistry = new ConcurrentHashMap<>();
         callbackToUser = new ConcurrentHashMap<>();
-       
+        // Create a fixed thread pool with 10 threads
         threadPool = Executors.newFixedThreadPool(10);
         System.out.println("Chat server initialized with thread pool");
     }
@@ -169,7 +169,7 @@ public class ChatNetworkServerHandler extends UnicastRemoteObject implements Cha
         System.out.println("New chat created with ID: " + chatId);
 
         // Notify all connected clients about the new chat using the thread pool
-        final String newChatMessage = "A new chat (ID: " + chatId + ") has been created. Subscribe to join the conversation!";
+        final String newChatMessage = "A new chat (ID: " + chatId + ") has been created. Subscribe to join!";
         for (Map.Entry<String, List<ChatClientCallback>> entry : userCallbacks.entrySet()) {
             final String userNickname = entry.getKey();
             List<ChatClientCallback> callbacks = entry.getValue();
@@ -188,10 +188,6 @@ public class ChatNetworkServerHandler extends UnicastRemoteObject implements Cha
         }
     }
 
-    /**
-     * Shuts down the thread pool gracefully.
-     * This method should be called when the server is shutting down.
-     */
     public void shutdown() {
         System.out.println("Shutting down chat server thread pool...");
         if (threadPool != null && !threadPool.isShutdown()) {

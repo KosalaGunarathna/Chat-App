@@ -54,22 +54,22 @@ public class SignupView extends JFrame {
         headerPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Fields & Labels
-        JLabel emailLabel = createLabel("Email:");
+        JLabel emailLabel = createLabel("Email");
         emailField = createTextField();
 
-        JLabel usernameLabel = createLabel("Username:");
+        JLabel usernameLabel = createLabel("Username");
         usernameField = createTextField();
 
-        JLabel passwordLabel = createLabel("Password:");
+        JLabel passwordLabel = createLabel("Password");
         passwordField = new JPasswordField(20);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordField.setBorder(createTextFieldBorder());
 
-        JLabel nicknameLabel = createLabel("Nickname:");
+        JLabel nicknameLabel = createLabel("Nickname");
         nicknameField = createTextField();
 
         JLabel profilePicLabel = createLabel("Profile Picture:");
-        profilePictureLabel = new JLabel("No image selected");
+        profilePictureLabel = new JLabel();
         profilePictureLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
         uploadPictureButton = new JButton("Upload Picture");
@@ -92,35 +92,64 @@ public class SignupView extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.gridwidth = 2;
-        gbc.gridx = 0;
+        gbc.weightx = 1.0;
 
         int row = 0;
-        gbc.gridy = row++; formPanel.add(emailLabel, gbc);
-        gbc.gridy = row++; formPanel.add(emailField, gbc);
-        gbc.gridy = row++; formPanel.add(usernameLabel, gbc);
-        gbc.gridy = row++; formPanel.add(usernameField, gbc);
-        gbc.gridy = row++; formPanel.add(passwordLabel, gbc);
-        gbc.gridy = row++; formPanel.add(passwordField, gbc);
-        gbc.gridy = row++; formPanel.add(nicknameLabel, gbc);
-        gbc.gridy = row++; formPanel.add(nicknameField, gbc);
-        gbc.gridy = row++; formPanel.add(profilePicLabel, gbc);
 
+// Email
+        gbc.gridy = row++;gbc.gridx = 0;
+        gbc.gridwidth = 1;
+        formPanel.add(emailLabel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(emailField, gbc);
+
+// Username
+        gbc.gridy = row++;
+        gbc.gridx = 0;
+        formPanel.add(usernameLabel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(usernameField, gbc);
+
+// Password
+        gbc.gridy = row++;
+        gbc.gridx = 0;
+        formPanel.add(passwordLabel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(passwordField, gbc);
+
+// Nickname
+        gbc.gridy = row++;
+        gbc.gridx = 0;
+        formPanel.add(nicknameLabel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(nicknameField, gbc);
+
+// Profile Pic Label
+        gbc.gridy = row++;
+        gbc.gridx = 0;
+        formPanel.add(profilePicLabel, gbc);
+
+// Profile Pic Upload Area
         JPanel picturePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         picturePanel.setBackground(THEME_BACKGROUND);
         picturePanel.add(profilePictureLabel);
         picturePanel.add(uploadPictureButton);
-        gbc.gridy = row++; formPanel.add(picturePanel, gbc);
+        gbc.gridx = 1;
+        formPanel.add(picturePanel, gbc);
 
+// Buttons
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         buttonPanel.setBackground(THEME_BACKGROUND);
         buttonPanel.add(registerButton);
         buttonPanel.add(backButton);
+
         gbc.gridy = row++;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 8, 8, 8);
         formPanel.add(buttonPanel, gbc);
 
-        // Main panel
+// Main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(THEME_BACKGROUND);
         mainPanel.add(headerPanel, BorderLayout.NORTH);
@@ -128,19 +157,20 @@ public class SignupView extends JFrame {
 
         add(mainPanel);
 
+
         // User service
         UserAccountService userAccountService = new UserAccountService();
 
         uploadPictureButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Select Profile Picture");
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png",".icon"));
 
             int result = fileChooser.showOpenDialog(SignupView.this);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 profilePicturePath = selectedFile.getAbsolutePath();
-                profilePictureLabel.setText(selectedFile.getName());
+//                profilePictureLabel.setText(selectedFile.getName());
 
                 try {
                     ImageIcon icon = new ImageIcon(profilePicturePath);
@@ -148,7 +178,7 @@ public class SignupView extends JFrame {
                     profilePictureLabel.setIcon(new ImageIcon(img));
                 } catch (Exception ex) {
                     profilePictureLabel.setIcon(null);
-                    profilePictureLabel.setText("Error loading image: " + selectedFile.getName());
+                    profilePictureLabel.setText("Error loading image: " + selectedFile);
                 }
             }
         });
